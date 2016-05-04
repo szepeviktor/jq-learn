@@ -1,0 +1,40 @@
+# Tests are groups of three lines: program, input, expected output.
+# Blank lines and lines starting with # are ignored.
+
+#########################################################################
+# Uses of empty
+#########################################################################
+
+empty | 2
+null
+# empty
+
+2 | empty
+null
+# empty
+
+empty + 2
+null
+# empty
+
+2 + empty
+null
+# empty
+
+empty , 2
+null
+2
+
+2 , empty
+null
+2
+
+true or empty
+null
+true
+
+true and empty
+null
+# empty
+
+# vim:ai:sw=2:ts=2:et:syntax=python

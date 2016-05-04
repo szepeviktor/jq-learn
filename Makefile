@@ -1,9 +1,13 @@
-#
-#
+# Easy management of tests
 
 .SILENT:
 
-all: tests
+tests: mapping empty
 
-tests:
+mapping:
 	jq --run-tests mapping.test
+
+empty:
+	jq --run-tests empty.test
+
+# vim:ai:sw=4:ts=4:noet:syntax=make
