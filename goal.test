@@ -1,0 +1,32 @@
+# Tests are groups of three lines: program, input, expected output.
+# Blank lines and lines starting with # are ignored.
+
+#########################################################################
+# Goal-directed programming
+#########################################################################
+
+
+("0","1") + ("01"|split(""))[]
+null
+"00"
+"10"
+"01"
+"11"
+
+limit(3; (.|split(""))[] + (.|split(""))[])
+"0123456789ABCDEF"
+"00"
+"10"
+"20"
+
+last((.|split(""))[] + (.|split(""))[])
+"0123456789ABCDEF"
+"FF"
+
+limit(3; (range(.) + range(.)))
+1000000000
+0
+1
+2
+
+# vim:ai:sw=2:ts=2:et:syntax=python

@@ -2,7 +2,10 @@
 
 .SILENT:
 
-tests: mapping empty
+tests: mapping empty goal
+
+goal:
+	jq --run-tests goal.test
 
 mapping:
 	jq --run-tests mapping.test
