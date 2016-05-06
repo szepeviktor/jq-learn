@@ -29,6 +29,10 @@ null
 null
 2
 
+empty or true
+null
+# empty
+
 true or empty
 null
 true
