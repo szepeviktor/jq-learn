@@ -3,17 +3,25 @@
 # Usage: script.jq --arg string "mi" --arg target "mi mama me mima"
 
 # Like Icon 'find'
-def find(s; t):
-    t | _strindices(s)[]
+def find(needle; haystack):
+    haystack
+    | _strindices(needle)[]
+;
+
+# Like Icon 'upto'
+def upto(cset; string):
+    string
+    | [_strindices(cset | split("")[])]
+    | flatten
+    | unique[]
 ;
 
 # Entry point
-def main($s; $t):
-    "Positions of \"" + $s + "\" inside \"" + $t + "\":",
-    find($s; $t)
+def main:
+    "Positions of \"" + $string + "\" inside \"" + $target + "\":",
+    find($string; $target)
 ;
 
-# Called with global variables
-main($string; $target)
+main
 
 # vim:ai:sw=4:ts=4:et:syntax=python

@@ -58,20 +58,37 @@ null
 64
 125
 
-def find(s;t): t|_strindices(s)[]; find("ma"; "mi mama me mima")
+def find(s; t): t|_strindices(s)[]; find("on"; "one motion is optional")
+null
+0
+8
+18
+
+def upto(c; s): s | [_strindices(c|split("")[])] | flatten | unique[]; upto("on"; .)
+"one motion is optional"
+0
+1
+5
+8
+9
+14
+18
+19
+
+def find(s; t): t|_strindices(s)[]; find("ma"; "mi mama me mima")
 null
 3
 5
 13
 
-def find(s;t): t|_strindices(s)[]; find("ab"; .)
+def find(s; t): t|_strindices(s)[]; find("ab"; .)
 "abaabbaaabbbaaaabbbb" 
 0
 3
 8
 15
 
-def upto($c;s): s | [_strindices($c|split("")[])] | flatten | sort[]; upto("aeiou"; .)
+def upto(c; s): s | [_strindices(c|split("")[])] | flatten | unique[]; upto("aeiou"; .)
 "kaleidoscope"
 1
 3
