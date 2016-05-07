@@ -41,4 +41,12 @@ true and empty
 null
 # empty
 
+try empty catch 0
+null
+# empty
+
+empty // 0
+null
+0
+
 # vim:ai:sw=2:ts=2:et:syntax=python
