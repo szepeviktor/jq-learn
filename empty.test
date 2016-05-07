@@ -49,4 +49,16 @@ empty // 0
 null
 0
 
+try empty catch error("Die")
+null
+# empty
+
+try error("Die") catch empty
+null
+# empty
+
+error("Die")?
+null
+# empty
+
 # vim:ai:sw=2:ts=2:et:syntax=python
