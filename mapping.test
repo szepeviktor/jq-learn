@@ -51,4 +51,14 @@ null
 64
 81
 
+# reverse implemented using reduce
+def rev: reduce .[] as $x ([]; [$x] + .); (.|rev) == (.|reverse)
+[1,2,3,4,5]
+true
+
+# length implemented using reduce
+def len: reduce .[] as $x (0; . + 1); (.|len) == (.|length)
+[1,2,3,4,5]
+true
+
 # vim:ai:sw=2:ts=2:et:syntax=python
