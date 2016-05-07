@@ -1,19 +1,18 @@
-#!/usr/bin/jq -Rf
+#!/bin/sh
 
-def find(s; t):
-    t | _strindices(s)[]
-;
+# Usage: script.sh "mi" "mi mama me mima"
 
-def main($s; $t):
-    first(find($s; $t))
-;
+STRING=${1?Expected string to find}
+TARGET=${2?Expected target string}
 
-########################################################################
-#
-########################################################################
+# jq -MnRrf ...
+exec jq \
+    --monochrome-output  \
+    --null-input \
+    --raw-input \
+    --raw-output \
+    --from-file ${0%.sh}.jq \
+    --arg string "$STRING" \
+    --arg target "$TARGET"
 
-input as $s |
-input as $t |
-main($s; $t)
-
-# vim:ai:sw=4:ts=4:et:syntax=python
+# vim:ai:sw=4:ts=4:et:syntax=sh
