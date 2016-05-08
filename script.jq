@@ -2,19 +2,31 @@
 
 # Usage: script.jq --arg string "mi" --arg target "mi mama me mima"
 
-# Like Icon 'find'
+#
 def find(needle; haystack):
     haystack
     | _strindices(needle)[]
 ;
 
-# Like Icon 'upto'
+#
 def upto(cset; string):
     string
-    | [_strindices(cset | split("")[])]
+    | [_strindices((cset/"")[])]
     | flatten
     | unique[]
 ;
+
+# not well ordered
+def star($s):
+    "", (($s/"")[]) + star($s)
+;
+
+# ordered
+#?def star($s):
+#?    "",
+#?    star($s) as $a | (($s/"")[]) as $b
+#?    | $a + $b
+#?;
 
 # Entry point
 def main:

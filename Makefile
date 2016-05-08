@@ -2,15 +2,17 @@
 
 .SILENT:
 
+JQ=jq --run-tests
+
 tests: mapping empty goal
 
 goal:
-	jq --run-tests goal.test
+	$(JQ) goal.test
 
 mapping:
-	jq --run-tests mapping.test
+	$(JQ) mapping.test
 
 empty:
-	jq --run-tests empty.test
+	$(JQ) empty.test
 
 # vim:ai:sw=4:ts=4:noet:syntax=make
