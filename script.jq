@@ -17,8 +17,14 @@ def upto(cset; string):
 ;
 
 # not well ordered
+#?def star($s):
+#?    "", (($s/"")[]) + star($s)
+#?;
+
+# TCO?
 def star($s):
-    "", (($s/"")[]) + star($s)
+   def r: "", (($s/"")[]) + r;
+   r
 ;
 
 # ordered
