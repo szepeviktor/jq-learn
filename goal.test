@@ -134,4 +134,12 @@ def star($s): "", star($s) as $a | (($s/"")[]) as $b | $a + $b; limit(8; star(.)
 "11"
 "000"
 
+def cut(g): label $x|g|.,break $x; cut(range(5;100))
+null
+5
+
+def cut(g): label $x|g|.,break $x; cut(range(5;100)) == first(range(5;100))
+null
+true
+
 # vim:ai:sw=2:ts=2:et:syntax=python
