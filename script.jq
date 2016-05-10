@@ -1,10 +1,33 @@
 #!/usr/bin/jq -MnRrf
 
-# Usage: script.jq --arg string "mi" --arg target "mi mama me mima"
-
-#
+# Reimplementation of `first`
 def cut(g):
-    label $x | g | ., break $x;
+    label $pipe | g | ., break $pipe
+;
+
+# Reimplementation of `limit`
+def take($n; g):
+    if $n < 0
+    then g
+    else label $loop |
+        foreach g as $item
+        ($n; if . < 1
+             then break $loop
+             else . - 1 end;
+         $item)
+    end
+; 
+
+# Missing builtin opposite of `limit`
+def drop($n; g):
+    if $n < 0
+    then g
+    else foreach g as $item
+            ($n;
+            if . < 0 then . else . - 1 end;
+            if . < 0 then $item else empty end)
+    end
+; 
 
 #
 def find(needle; haystack):
@@ -38,6 +61,7 @@ def star($s):
 #?;
 
 # Entry point
+# Usage: script.jq --arg string "mi" --arg target "mi mama me mima"
 def main:
     "Positions of \"" + $string + "\" inside \"" + $target + "\":",
     find($string; $target)
