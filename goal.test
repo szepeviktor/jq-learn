@@ -134,27 +134,4 @@ def star($s): "", star($s) as $a | (($s/"")[]) as $b | $a + $b; limit(8; star(.)
 "11"
 "000"
 
-def cut(g): label $pipe|g|.,break $pipe; cut(range(5;100))
-null
-5
-
-def cut(g): label $pipe|g|.,break $pipe; cut(range(5;100)) == first(range(5;100))
-null
-true
-
-def take($n; g): if $n<0 then g else label $loop | foreach g as $item ($n; if .<1 then break $loop else .-1 end; $item) end; [take(4;range(100))] == [limit(4;range(77))]
-null
-true
-
-def drop($n; g): if $n<0 then g else foreach g as $item ($n; if .<0 then . else .-1 end; if .<0 then $item else empty end) end; drop(5; range(8))
-null
-5
-6
-7
-
-def drop($n; g): if $n<0 then g else foreach g as $item ($n; if .<0 then . else .-1 end; if .<0 then $item else empty end) end; drop(1000; range(1002))
-null
-1000
-1001
-
 # vim:ai:sw=2:ts=2:et:syntax=python
