@@ -5,39 +5,39 @@
 # Streams
 #########################################################################
 
-def cut(g): label $pipe|g|.,break $pipe; cut(range(5;100))
+include "lib/stream"; cut(range(5;100))
 null
 5
 
-def cut(g): label $pipe|g|.,break $pipe; cut(range(5;100)) == first(range(5;100))
+include "lib/stream"; cut(range(5;100)) == first(range(5;100))
 null
 true
 
-def take($n; g): if $n<0 then g else label $loop | foreach g as $item ($n; if .<1 then break $loop else .-1 end; $item) end; [take(4;range(100))] == [limit(4;range(77))]
+include "lib/stream"; [take(4;range(100))] == [limit(4;range(77))]
 null
 true
 
-def drop($n; g): if $n<0 then g else foreach g as $item ($n; if .<0 then . else .-1 end; if .<0 then $item else empty end) end; drop(5; range(8))
+include "lib/stream"; drop(5; range(8))
 null
 5
 6
 7
 
-def drop($n; g): if $n<0 then g else foreach g as $item ($n; if .<0 then . else .-1 end; if .<0 then $item else empty end) end; drop(1000; range(1002))
+include "lib/stream"; drop(1000; range(1002))
 null
 1000
 1001
 
-def enum(g): foreach g as $item (-1; .+1; [., $item]); enum(split("")[])
+include "lib/stream"; enum(split("")[])
 "ae"
 [0,"a"]
 [1,"e"]
 
-def enum(g): foreach g as $item (-1; .+1; [., $item]); last(enum(split("")[]))
+include "lib/stream"; last(enum(split("")[]))
 "aeiou"
 [4,"u"]
 
-def enum(g): foreach g as $item (-1; .+1; [., $item]); nth(11; enum(split("")[]))
+include "lib/stream";  nth(11; enum(split("")[]))
 "abcdefghijklmnopqrstuvwxyz"
 [11,"l"]
 
