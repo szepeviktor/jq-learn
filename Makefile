@@ -4,15 +4,21 @@
 
 JQ=jq --run-tests
 
-tests: mapping empty goal
+TESTS=\
+	  empty.test\
+	  goal.test\
+	  mapping.test\
+	  stream.test\
 
-goal:
-	$(JQ) goal.test
+all: $(TESTS:.test=.log)
 
-mapping:
-	$(JQ) mapping.test
+%.log: %.test
+	$(JQ) $< | tee $@ | grep -v '^Testing'
+	grep -q '^\*\*\*' $@ && touch $< || true
 
-empty:
-	$(JQ) empty.test
+clean:
+	rm -f *.log
+
+build: clean all
 
 # vim:ai:sw=4:ts=4:noet:syntax=make
