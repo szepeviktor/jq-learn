@@ -7,19 +7,6 @@ def cut(g):
     label $pipe | g | ., break $pipe
 ;
 
-# Reimplementation of `limit`
-def take($n; g):
-    if $n < 0
-    then g
-    else label $loop |
-        foreach g as $item
-        ($n; if . < 1
-             then break $loop
-             else . - 1 end;
-         $item)
-    end
-; 
-
 # Missing builtin opposite of `limit`
 def drop($n; g):
     if $n < 0
@@ -36,5 +23,17 @@ def enum(g):
     foreach g as $item (-1; . + 1; [., $item])
 ;
 
+# Reimplementation of `limit`
+def take($n; g):
+    if $n < 0
+    then g
+    else label $loop |
+        foreach g as $item
+        ($n; if . < 1
+             then break $loop
+             else . - 1 end;
+         $item)
+    end
+; 
 
 # vim:ai:sw=4:ts=4:et:syntax=python
