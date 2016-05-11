@@ -30,6 +30,11 @@ def drop($n; g):
 ; 
 
 #
+def enum(g):
+    foreach g as $item (-1; . + 1; [., $item])
+;
+
+#
 def find(needle; haystack):
     haystack | _strindices(needle)[]
 ;
