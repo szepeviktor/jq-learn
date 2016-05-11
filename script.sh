@@ -7,6 +7,7 @@ TARGET=${2?Expected target string}
 
 # jq -MnRrf ...
 exec jq \
+    -L ${0%/*}/lib \
     --monochrome-output  \
     --null-input \
     --raw-input \
