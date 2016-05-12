@@ -13,7 +13,7 @@ include "lib/stream"; cut(range(5;100)) == first(range(5;100))
 null
 true
 
-include "lib/stream"; [take(4;range(100))] == [limit(4;range(77))]
+include "lib/stream"; [take(4;range(100))] == [limit(4; range(77))]
 null
 true
 
@@ -41,8 +41,16 @@ include "lib/stream";  nth(11; enum(split("")[]))
 "abcdefghijklmnopqrstuvwxyz"
 [11,"l"]
 
-include "lib/stream";  cut(zip(range(10);range(20;30)))
+include "lib/stream";  cut(zip(range(10); range(20;30)))
 null
 [0,20]
+
+include "lib/stream";  last(zip(range(5); range(20;23)))
+null
+[4,null]
+
+#include "lib/stream";  last(zip(range(5); range(100); range(20;23)))
+#null
+#[4,null]
 
 # vim:ai:sw=2:ts=2:et:syntax=python

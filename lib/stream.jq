@@ -41,13 +41,29 @@ def take($n; g):
 #?    [[g], [h]] | transpose[]
 #?;
 
+# Optimized for two generators
 def zip(g; h):
     [[g], [h]] as $pair |
-    $pair[0]|length as $len |
-    if $len != ($pair[1]|length) then error("zip: length not equal") else null end |
-    # finally do it
-    foreach range($len) as $j
-        (.; .; [$pair[0][$j], $pair[1][$j]])
+    foreach range($pair[0]|length) as $j
+        (null; null; [$pair[0][$j], $pair[1][$j]])
 ;
+
+# Zip two or more generators
+def zipN:
+    if . == []
+    then empty
+    else . as $in
+        | (map(length) | max) as $max
+        | length as $len
+        | foreach range(0; $max) as $j
+              (null; reduce range(0; $len) as $i
+                         ([]; . + [ $in[$i][$j]]))
+    end
+;
+
+# 3, 4...
+def zip(a; b; c): [[a], [b], [c]] | zipN;
+def zip(a; b; c; d): [[a], [b], [c], [d]] | zipN;
+
 
 # vim:ai:sw=4:ts=4:et:syntax=python
