@@ -50,6 +50,14 @@ null
 190392490709135
 308061521170129
 
+include "lib/stream"; [limit(10; powers(.))]
+2
+[1,2,4,8,16,32,64,128,256,512]
+
+#?include "lib/stream"; [limit(6; factorial)]
+#?null
+#?[1,1,2,6,24,120]
+
 #
 # enum
 #
