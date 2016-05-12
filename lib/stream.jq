@@ -36,4 +36,9 @@ def take($n; g):
     end
 ; 
 
+# Not optimized `zip`!
+def zip(g; h):
+    [[g], [h]] | transpose[]
+;
+
 # vim:ai:sw=4:ts=4:et:syntax=python
