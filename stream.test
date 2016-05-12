@@ -45,4 +45,4 @@ include "lib/stream";  cut(zip(range(10);range(20;30)))
 null
 [0,20]
 
-# vim:ai:sw=2:ts=2:et:wrap:syntax=python
+# vim:ai:sw=2:ts=2:et:syntax=python

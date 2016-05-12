@@ -37,8 +37,17 @@ def take($n; g):
 ; 
 
 # Not optimized `zip`!
+#?def zip(g; h):
+#?    [[g], [h]] | transpose[]
+#?;
+
 def zip(g; h):
-    [[g], [h]] | transpose[]
+    [[g], [h]] as $pair |
+    $pair[0]|length as $len |
+    if $len != ($pair[1]|length) then error("zip: length not equal") else null end |
+    # finally do it
+    foreach range($len) as $j
+        (.; .; [$pair[0][$j], $pair[1][$j]])
 ;
 
 # vim:ai:sw=4:ts=4:et:syntax=python
