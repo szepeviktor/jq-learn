@@ -5,7 +5,16 @@
 # Streams
 #########################################################################
 
+#
+#
+# cut, take, drop, nth
+#
+
 include "lib/stream"; cut(range(5;100))
+null
+5
+
+include "lib/stream"; nth(0; range(5;100))
 null
 5
 
@@ -28,6 +37,23 @@ null
 1000
 1001
 
+include "lib/stream"; [take(21; fibonacci)]
+null
+[0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765]
+
+include "lib/stream"; nth(70; fibonacci)
+null
+190392490709135
+
+include "lib/stream"; take(2; drop(70; fibonacci))
+null
+190392490709135
+308061521170129
+
+#
+# enum
+#
+
 include "lib/stream"; enum(split("")[])
 "ae"
 [0,"a"]
@@ -41,6 +67,18 @@ include "lib/stream";  nth(11; enum(split("")[]))
 "abcdefghijklmnopqrstuvwxyz"
 [11,"l"]
 
+#
+# zip
+#
+
+include "lib/stream";  zip(range(0); range(0))
+null
+# empty
+
+include "lib/stream";  [] | zipN
+null
+# empty
+
 include "lib/stream";  cut(zip(range(10); range(20;30)))
 null
 [0,20]
@@ -49,8 +87,12 @@ include "lib/stream";  last(zip(range(5); range(20;23)))
 null
 [4,null]
 
-#include "lib/stream";  last(zip(range(5); range(100); range(20;23)))
-#null
-#[4,null]
+include "lib/stream";  last([[range(5)], [range(20;23)]] | zipN)
+null
+[4,null]
+
+include "lib/stream";  nth(5; zip(range(5); range(100); range(20;23)))
+null
+[null,5,null]
 
 # vim:ai:sw=2:ts=2:et:syntax=python

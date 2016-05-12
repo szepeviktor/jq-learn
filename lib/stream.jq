@@ -20,7 +20,8 @@ def drop($n; g):
 
 # Produce enumerated items from `g`
 def enum(g):
-    foreach g as $item (-1; . + 1; [., $item])
+    foreach g as $item
+        (-1; . + 1; [., $item])
 ;
 
 # Reimplementation of `limit`
@@ -29,10 +30,10 @@ def take($n; g):
     then g
     else label $loop |
         foreach g as $item
-        ($n; if . < 1
-             then break $loop
-             else . - 1 end;
-         $item)
+            ($n; if . < 1
+                 then break $loop
+                 else . - 1 end;
+             $item)
     end
 ; 
 
@@ -44,26 +45,31 @@ def take($n; g):
 # Optimized for two generators
 def zip(g; h):
     [[g], [h]] as $pair |
-    foreach range($pair[0]|length) as $j
+    ($pair | map(length) | max) as $longest |
+    foreach range($longest) as $j
         (null; null; [$pair[0][$j], $pair[1][$j]])
 ;
 
 # Zip two or more generators
 def zipN:
-    if . == []
-    then empty
-    else . as $in
-        | (map(length) | max) as $max
-        | length as $len
-        | foreach range(0; $max) as $j
-              (null; reduce range(0; $len) as $i
-                         ([]; . + [ $in[$i][$j]]))
-    end
+    . as $in |
+    (map(length) | max) as $longest |
+    length as $N |
+    foreach range($longest) as $j
+        (null; reduce range($N) as $i
+                    ([]; . + [$in[$i][$j]]))
 ;
 
 # 3, 4...
 def zip(a; b; c): [[a], [b], [c]] | zipN;
 def zip(a; b; c; d): [[a], [b], [c], [d]] | zipN;
 
+#
+def fibonacci:
+    def r:
+        (.x + .y) as $f |
+        $f, ({x: .y, y: $f } | r);
+    {x: -1, y: 1} | r
+;
 
 # vim:ai:sw=4:ts=4:et:syntax=python
