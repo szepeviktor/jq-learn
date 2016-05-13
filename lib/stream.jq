@@ -7,21 +7,32 @@ def cut(g):
     label $pipe | g | ., break $pipe
 ;
 
+# Infinite regeneration of generator
+def cycle(g):
+    def R: g, R;
+    R
+;
+
 # Missing builtin opposite of `limit`
 def drop($n; g):
     if $n < 0
     then g
     else foreach g as $item
             ($n;
-            if . < 0 then . else . - 1 end;
+            if . < 0 then . else .-1 end;
             if . < 0 then $item else empty end)
     end
 ; 
 
 # Produce enumerated items from `g`
 def enum(g):
-    foreach g as $item
-        (-1; . + 1; [., $item])
+   foreach g as $item
+       (-1; .+1; [., $item])
+;
+
+#
+def replicate(n; x):
+    [range(n) | x]
 ;
 
 # Reimplementation of `limit`
@@ -32,7 +43,7 @@ def take($n; g):
         foreach g as $item
             ($n; if . < 1
                  then break $loop
-                 else . - 1 end;
+                 else .-1 end;
              $item)
     end
 ; 

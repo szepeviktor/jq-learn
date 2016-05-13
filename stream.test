@@ -6,7 +6,6 @@
 #########################################################################
 
 #
-#
 # cut, take, drop, nth
 #
 
@@ -36,6 +35,22 @@ include "lib/stream"; drop(1000; range(1002))
 null
 1000
 1001
+
+#
+# cycle, replicate
+#
+
+include "lib/stream"; [take(6; cycle(range(3)))]
+null
+[0,1,2,0,1,2]
+
+include "lib/stream"; replicate(4; 8)
+null
+[8,8,8,8]
+
+include "lib/stream"; replicate(4; "a")|join("")
+null
+"aaaa"
 
 #
 # enum

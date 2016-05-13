@@ -22,6 +22,10 @@ include "lib/series"; include "lib/stream"; [take(10; powers(.))]
 2
 [1,2,4,8,16,32,64,128,256,512]
 
+include "lib/series"; include "lib/stream"; nth(10; powers(.)) == pow(.; 10)
+7
+true
+
 include "lib/series"; include "lib/stream"; [take(6; factorial)]
 null
 [1,1,2,6,24,120]

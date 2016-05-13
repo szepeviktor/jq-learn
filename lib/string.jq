@@ -22,7 +22,7 @@ def star($s):
 # "Well" ordered
 def star_wo($s):
     "",
-    star_wo($s) as $a | (($s/"")[]) as $b
+    star_wo($s) as $a | ($s/"")[] as $b
     | $a + $b
 ;
 
