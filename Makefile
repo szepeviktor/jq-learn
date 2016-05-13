@@ -6,25 +6,25 @@
 # Macros
 ########################################################################
 
-JQ=jq --run-tests
+JQ := jq --run-tests
 
-TESTS=\
-	  empty.test\
-	  goal.test\
-	  mapping.test\
-	  series.test\
-	  stream.test\
-	  string.test\
+TESTS := $(wildcard *.test)
+
+########################################################################
+# Patterns
+########################################################################
+
+%.log: %.test
+	echo '>>>' $< '<<<'
+	$(JQ) $< | tee $@ | grep -v '^Testing'
+	-grep -q '^\*\*\*' $@ && touch $<
+	echo
 
 ########################################################################
 # Rules
 ########################################################################
 
 all: $(TESTS:.test=.log)
-
-%.log: %.test
-	$(JQ) $< | tee $@ | grep -v '^Testing'
-	grep -q '^\*\*\*' $@ && touch $< || true
 
 series.log: lib/series.jq lib/stream.jq
 stream.log: lib/stream.jq
