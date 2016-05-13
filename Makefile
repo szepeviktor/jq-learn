@@ -12,6 +12,7 @@ TESTS=\
 	  empty.test\
 	  goal.test\
 	  mapping.test\
+	  series.test\
 	  stream.test\
 	  string.test\
 
@@ -25,6 +26,7 @@ all: $(TESTS:.test=.log)
 	$(JQ) $< | tee $@ | grep -v '^Testing'
 	grep -q '^\*\*\*' $@ && touch $< || true
 
+series.log: lib/series.jq lib/stream.jq
 stream.log: lib/stream.jq
 string.log: lib/string.jq
 

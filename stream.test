@@ -37,27 +37,6 @@ null
 1000
 1001
 
-include "lib/stream"; [take(21; fibonacci)]
-null
-[0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765]
-
-include "lib/stream"; nth(70; fibonacci)
-null
-190392490709135
-
-include "lib/stream"; take(2; drop(70; fibonacci))
-null
-190392490709135
-308061521170129
-
-include "lib/stream"; [limit(10; powers(.))]
-2
-[1,2,4,8,16,32,64,128,256,512]
-
-#?include "lib/stream"; [limit(6; factorial)]
-#?null
-#?[1,1,2,6,24,120]
-
 #
 # enum
 #

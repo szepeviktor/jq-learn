@@ -15,8 +15,8 @@ def star($s):
 
 # TCO?
 #?def star($s):
-#?   def r: "", (($s/"")[]) + r;
-#?   r
+#?   def R: "", (($s/"")[]) + R;
+#?   R
 #?;
 
 # "Well" ordered
