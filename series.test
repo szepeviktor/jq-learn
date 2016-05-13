@@ -18,6 +18,11 @@ null
 190392490709135
 308061521170129
 
+# Golden ratio
+include "lib/series"; include "lib/stream"; [take(2; drop(70; fibonacci))] | (.[1]/.[0])*100000|floor|./100000
+null
+1.61803
+
 include "lib/series"; include "lib/stream"; [take(10; powers(.))]
 2
 [1,2,4,8,16,32,64,128,256,512]
