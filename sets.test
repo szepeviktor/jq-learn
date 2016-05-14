@@ -9,4 +9,20 @@ include "lib/icon"; set(.)
 [3,2,1,"k"]
 {"1":true,"2":true,"3":true,"k":true}
 
+include "lib/icon"; set(.) | has("k")
+[3,2,1,"k"]
+true
+
+include "lib/icon"; set(.) | has("h")
+[3,2,1,"k"]
+false
+
+include "lib/icon"; set(.) as $s | "k" | in($s)
+[3,2,1,"k"]
+true
+
+include "lib/icon"; set(.) as $s | "h" | in($s)
+[3,2,1,"k"]
+false
+
 # vim:ai:sw=2:ts=2:et:syntax=python

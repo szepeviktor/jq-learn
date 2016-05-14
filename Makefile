@@ -15,8 +15,8 @@ TESTS := $(wildcard *.test)
 ########################################################################
 
 %.log: %.test
-	@echo '>>>' $< '<<<'
-	$(JQ) $< | tee $@ | grep -v '^Testing'
+	@echo '>>>' $< '<<<' | tee $@
+	$(JQ) $< | tee --append $@ | grep -v '^Testing'
 	-grep -q '^\*\*\*' $@ && touch $<
 	@echo
 
@@ -35,7 +35,7 @@ string.log: lib/icon.jq
 ########################################################################
 
 clean:
-	rm -f *.log
+	rm -f $(TESTS:.test=.log)
 
 build: clean all
 
