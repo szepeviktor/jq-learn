@@ -28,7 +28,7 @@ all: $(TESTS:.test=.log)
 
 series.log: lib/series.jq lib/stream.jq
 stream.log: lib/stream.jq
-string.log: lib/string.jq
+string.log: lib/icon.jq
 
 ########################################################################
 # Utilities

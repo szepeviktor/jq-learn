@@ -1,11 +1,11 @@
 # Called from `script.sh`
 
-import "string" as str;
+import "icon" as icon;
 
 # Entry point
 def main:
     "Positions of \"" + $string + "\" inside \"" + $target + "\":",
-    str::find($string; $target)
+   icon::find($string; $target)
 ;
 
 main

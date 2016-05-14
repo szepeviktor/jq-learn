@@ -1,0 +1,12 @@
+# Tests are groups of three lines: program, input, expected output.
+# Blank lines and lines starting with # are ignored.
+
+#########################################################################
+# Set functions
+#########################################################################
+
+include "lib/icon"; set(.)
+[3,2,1,"k"]
+{"1":true,"2":true,"3":true,"k":true}
+
+# vim:ai:sw=2:ts=2:et:syntax=python
