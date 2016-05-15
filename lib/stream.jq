@@ -15,12 +15,12 @@ def cycle(g):
 
 # Missing builtin opposite of `limit`
 def drop($n; g):
-    if $n < 0
-    then g
+    def when(c; v): if c then v else empty end;
+    if $n < 0 then g
     else foreach g as $item
             ($n;
             if . < 0 then . else .-1 end;
-            if . < 0 then $item else empty end)
+            when(. < 0; $item))
     end
 ; 
 
@@ -31,8 +31,8 @@ def enum(g):
 ;
 
 #
-def replicate(n; x):
-    [range(n) | x]
+def replicate($n; x):
+    [range($n) | x]
 ;
 
 # Reimplementation of `limit`

@@ -30,18 +30,18 @@ def fibonacci:
     | (.x+.y)
 ;
 
-def from($n):
+def from(n):
 #   def R: ., (. + 1 | R);
-#   $n | R
+#   n | R
 #
-    $n | iterate(.+1)
+    n | iterate(.+1)
 ;
 
-def fromBy($n; $i):
+def fromBy(n; $i):
 #   def R: ., (. + $i | R);
-#   $n | R
+#   n | R
 #
-    $n | iterate(.+$i)
+    n | iterate(.+$i)
 ;
 
 def powers($n):

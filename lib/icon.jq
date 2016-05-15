@@ -20,32 +20,27 @@ def upto(cset; string):
     | unique[]
 ;
 
-# Replicate string `s` `n` times
-def repl(s; n):
-    reduce [range(n) | s][] as $t (""; . += $t)
-;
-
 # Build a set from an array
 def set(a):
     reduce a[] as $x ({}; . += {($x|tostring): true})
 ;
 
 # Generate the infinite language of characters in `$s`
-def star($s):
+def star(s):
     # Not "well ordered"
-    "", (($s/"")[]) + star($s)
+    "", ((s/"")[]) + star(s)
 ;
 
 # TCO?
-#?def star($s):
-#?   def R: "", (($s/"")[]) + R;
+#?def star(s):
+#?   def R: "", ((s/"")[]) + R;
 #?   R
 #?;
 
 # "Well" ordered
-def star_wo($s):
+def star_wo(s):
     "",
-    star_wo($s) as $a | ($s/"")[] as $b
+    star_wo(s) as $a | (s/"")[] as $b
     | $a + $b
 ;
 
