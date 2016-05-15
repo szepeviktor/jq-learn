@@ -5,40 +5,118 @@
 # Set functions
 #########################################################################
 
+#
+# set construction
+#
+
+# {x,y...}
 include "lib/icon"; set(.)
 [3,2,1,"k"]
 {"1":true,"2":true,"3":true,"k":true}
 
+#
+# set add/del
+#
+
+include "lib/icon"; set(./"")
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; set(./"") | del(.e)
+"aeiuo"
+{"a":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; set(./"") | del(.e,.a,.u)
+"aeiuo"
+{"i":true,"o":true}
+
+include "lib/icon"; set(./"") | del(.e) | . += {e:true}
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; set(./"") | del(.e,.a,.u) | . += {u:true,a:true,e:true}
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+#
+# set membership
+#
+
+# ∋
 include "lib/icon"; set(.) | has("k")
 [3,2,1,"k"]
 true
 
+# ∋
 include "lib/icon"; set(.) | .k
 [3,2,1,"k"]
 true
 
+# ∋
 include "lib/icon"; set(.) | has("h")
 [3,2,1,"k"]
 false
 
-include "lib/icon"; set(.) | .h
-[3,2,1,"k"]
-null
-
-include "lib/icon"; set(.) | .h//false
-[3,2,1,"k"]
-false
-
+# ∋
 include "lib/icon"; set(.) | if .h then true else false end
 [3,2,1,"k"]
 false
 
+# ∋
+include "lib/icon"; set(.) | .h
+[3,2,1,"k"]
+null
+
+# ∌
+include "lib/icon"; set(.) | .h|not
+[3,2,1,"k"]
+true
+
+# ∌
+include "lib/icon"; set(.) | .h==null
+[3,2,1,"k"]
+true
+
+# ∈
 include "lib/icon"; set(.) as $s | "k" | in($s)
 [3,2,1,"k"]
 true
 
+# ∈
 include "lib/icon"; set(.) as $s | "h" | in($s)
 [3,2,1,"k"]
 false
+
+# ∈
+include "lib/icon"; set(.) as $s | "h" | in($s)
+[3,2,1,"k"]
+false
+
+# null => false
+include "lib/icon"; set(.) | .h//false
+[3,2,1,"k"]
+false
+
+#
+# set containment
+#
+
+# ⊂ ⊃
+
+#
+# set operations
+#
+
+# ∪
+include "lib/icon"; (set("aiu"/"") + set("eo"/""))
+null
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+# ∪
+include "lib/icon"; (set("aiu"/"") * set("eo"/""))
+null
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+# ∩
 
 # vim:ai:sw=2:ts=2:et:syntax=python
