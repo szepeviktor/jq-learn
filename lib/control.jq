@@ -22,13 +22,16 @@ def run(x):
 #
 # def throw, raise ???
 
+# ???
+# def when(filter; action): if filter?//null then action else . end;
+
 # 
-def when(c; x):
-    if c then x else empty end
+def when(cond; x):
+    if cond then x else empty end
 ;
 
-def unless(c; x):
-    if c then empty else x end
+def unless(cond; x):
+    if cond then empty else x end
 ;
 
 # vim:ai:sw=4:ts=4:et:syntax=python
