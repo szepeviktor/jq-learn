@@ -22,6 +22,14 @@ length
 { }
 0
 
+include "lib/icon"; cset(.) | keys
+"aeiuo"
+["a","e","i","o","u"]
+
+include "lib/icon"; cset(.) | length
+"aeiuo"
+5
+
 #
 # set add/del
 #
@@ -137,30 +145,45 @@ null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
 # ∩
-include "lib/icon"; cset("aeiouxyz") | intersect(cset("xyz12345"))
+include "lib/icon"; cset("aeiouxyz") | intersection(cset("xyz12345"))
 null
 {"x":true,"y":true,"z":true}
 
+# ∩ ∅
+include "lib/icon"; (cset("xyz") | intersection(cset("abc"))) == {}
+null
+true
+
 # ∩ ∪
-include "lib/icon"; cset("aiu") + cset("eo") | intersect(cset("eo"))
+include "lib/icon"; cset("aiu") + cset("eo") | intersection(cset("eo"))
 null
 {"o":true,"e":true}
 
-include "lib/icon"; cset("aeiou") | intersect(cset("eo")) + cset("aiu")
+include "lib/icon"; cset("aeiou") | intersection(cset("eo")) + cset("aiu")
 null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
+
+# –
+include "lib/icon"; cset("aeiou") | difference(cset("abc"))
+null
+{"e":true,"i":true,"o":true,"u":true}
 
 #
 # set containment
 #
 
 # ⊂
-include "lib/icon"; (cset("xyz") | intersect(cset("xyz12345"))) == cset("xyz")
+include "lib/icon"; cset("xyz") as $a | cset("xyz12345") as $b | $a != $b and ($a | intersection($b)) == $a
 null
 true
 
 # ⊂
 include "lib/icon"; cset("xyz") | subset(cset("xyz12345"))
+null
+true
+
+# ⊃ 
+include "lib/icon"; cset("xyz123") as $a | cset("xyz") as $b | $a != $b and ($a | intersection($b)) == $b
 null
 true
 
@@ -174,7 +197,7 @@ include "lib/icon"; cset("xyz") == {"y":true,"x":true,"z":true}
 null
 true
 
-# ≡
+# ≢
 include "lib/icon"; cset("xyz") != { }
 null
 true

@@ -46,14 +46,20 @@ def star_wo(s):
 
 ########################################################################
 
-def intersect(s):
+def intersection(s):
     to_entries
     | map(select(.key as $k | s | has($k)))
     | from_entries
 ;
 
+def difference(s):
+    to_entries
+    | map(select(.key as $k | s | has($k) | not))
+    | from_entries
+;
+
 def subset(s):
-    . == intersect(s)
+    . == intersection(s)
 ;
 
 # vim:ai:sw=4:ts=4:et:syntax=python
