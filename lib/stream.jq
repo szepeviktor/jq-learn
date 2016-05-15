@@ -2,6 +2,8 @@
 # Stream functions
 ########################################################################
 
+include "lib/control";
+
 # Reimplementation of `first`
 def cut(g):
     label $pipe | g | ., break $pipe
@@ -15,7 +17,6 @@ def cycle(g):
 
 # Missing builtin opposite of `limit`
 def drop($n; g):
-    def when(c; v): if c then v else empty end;
     if $n < 0 then g
     else foreach g as $item
             ($n;

@@ -13,7 +13,23 @@ include "lib/icon"; set(.) | has("k")
 [3,2,1,"k"]
 true
 
+include "lib/icon"; set(.) | .k
+[3,2,1,"k"]
+true
+
 include "lib/icon"; set(.) | has("h")
+[3,2,1,"k"]
+false
+
+include "lib/icon"; set(.) | .h
+[3,2,1,"k"]
+null
+
+include "lib/icon"; set(.) | .h//false
+[3,2,1,"k"]
+false
+
+include "lib/icon"; set(.) | if .h then true else false end
 [3,2,1,"k"]
 false
 

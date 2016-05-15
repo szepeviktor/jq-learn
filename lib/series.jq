@@ -2,10 +2,7 @@
 # Infinite series
 ########################################################################
 
-def iterate(f):
-    def R: ., (f | R);
-    . | R
-;
+include "lib/control";
 
 def factorial:
 #   def R:
