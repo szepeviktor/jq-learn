@@ -9,34 +9,54 @@
 # set construction
 #
 
-# {x,y...}
 include "lib/icon"; set(.)
 [3,2,1,"k"]
 {"1":true,"2":true,"3":true,"k":true}
+
+include "lib/icon"; cset(.)
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+# ∅
+length
+{ }
+0
 
 #
 # set add/del
 #
 
-include "lib/icon"; set(./"")
-"aeiuo"
-{"a":true,"e":true,"i":true,"o":true,"u":true}
-
-include "lib/icon"; set(./"") | del(.e)
+include "lib/icon"; cset(.) | del(.e)
 "aeiuo"
 {"a":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; set(./"") | del(.e,.a,.u)
+include "lib/icon"; cset(.) | del(.e) | .e = true
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; cset(.) | (.o,.u) = true
+"aei"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; cset(.) | del(.e,.a,.u)
 "aeiuo"
 {"i":true,"o":true}
 
-include "lib/icon"; set(./"") | del(.e) | . += {e:true}
+include "lib/icon"; cset(.) | del(.e) | . += {e:true}
 "aeiuo"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; set(./"") | del(.e,.a,.u) | . += {u:true,a:true,e:true}
+include "lib/icon"; cset(.) | del(.e,.a,.u) | . += {u:true,a:true,e:true}
 "aeiuo"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; cset(.) | del(.e,.a,.u) | (.e,.a,.u) = true
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/icon"; cset(.) | .x = true
+"abc"
+{"a":true,"b":true,"c":true,"x":true}
 
 #
 # set membership
@@ -92,31 +112,71 @@ include "lib/icon"; set(.) as $s | "h" | in($s)
 [3,2,1,"k"]
 false
 
+# ∉
+include "lib/icon"; set(.) as $s | "h" | in($s)|not
+[3,2,1,"k"]
+true
+
 # null => false
 include "lib/icon"; set(.) | .h//false
 [3,2,1,"k"]
 false
 
 #
-# set containment
-#
-
-# ⊂ ⊃
-
-#
 # set operations
 #
 
 # ∪
-include "lib/icon"; (set("aiu"/"") + set("eo"/""))
+include "lib/icon"; cset("aiu") + cset("eo")
 null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
 # ∪
-include "lib/icon"; (set("aiu"/"") * set("eo"/""))
+include "lib/icon"; cset("aiu") * cset("eo")
 null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
 # ∩
+include "lib/icon"; cset("aeiouxyz") | intersect(cset("xyz12345"))
+null
+{"x":true,"y":true,"z":true}
+
+# ∩ ∪
+include "lib/icon"; cset("aiu") + cset("eo") | intersect(cset("eo"))
+null
+{"o":true,"e":true}
+
+include "lib/icon"; cset("aeiou") | intersect(cset("eo")) + cset("aiu")
+null
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+#
+# set containment
+#
+
+# ⊂
+include "lib/icon"; (cset("xyz") | intersect(cset("xyz12345"))) == cset("xyz")
+null
+true
+
+# ⊂
+include "lib/icon"; cset("xyz") | subset(cset("xyz12345"))
+null
+true
+
+# ≡
+. == { }
+{ }
+true
+
+# ≡
+include "lib/icon"; cset("xyz") == {"y":true,"x":true,"z":true}
+null
+true
+
+# ≡
+include "lib/icon"; cset("xyz") != { }
+null
+true
 
 # vim:ai:sw=2:ts=2:et:syntax=python
