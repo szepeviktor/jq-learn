@@ -33,6 +33,7 @@ def enum(g):
 
 #
 def replicate($n; x):
+#   [limit($n; repeat(x))]
     [range($n) | x]
 ;
 
