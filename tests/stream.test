@@ -56,6 +56,10 @@ include "lib/stream"; replicate(4; 8)
 null
 [8,8,8,8]
 
+include "lib/stream"; 8|replicate(4)
+null
+[8,8,8,8]
+
 include "lib/stream"; [take(4; repeat(8))]
 null
 [8,8,8,8]

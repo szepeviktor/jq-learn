@@ -32,10 +32,12 @@ def enum(g):
 ;
 
 #
-def replicate($n; x):
+def replicate($n; $x):
 #   [limit($n; repeat(x))]
-    [range($n) | x]
+    [range($n) | $x]
 ;
+
+def replicate($n): replicate($n; .);
 
 # Reimplementation of `limit`
 def take($n; g):

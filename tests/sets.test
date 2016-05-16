@@ -9,24 +9,28 @@
 # set construction
 #
 
-include "lib/icon"; set(.)
-[3,2,1,"k"]
-{"1":true,"2":true,"3":true,"k":true}
-
-include "lib/icon"; cset(.)
-"aeiuo"
-{"a":true,"e":true,"i":true,"o":true,"u":true}
-
 # ∅
 length
 { }
 0
 
-include "lib/icon"; cset(.) | keys
+include "lib/sets"; set(.)
+[3,2,1,"k"]
+{"1":true,"2":true,"3":true,"k":true}
+
+include "lib/sets"; cset(.)
+"aeiuo"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/sets"; cset(.)
+"uioaaeiouoaeiouae"
+{"a":true,"e":true,"i":true,"o":true,"u":true}
+
+include "lib/sets"; cset(.) | keys
 "aeiuo"
 ["a","e","i","o","u"]
 
-include "lib/icon"; cset(.) | length
+include "lib/sets"; cset(.) | length
 "aeiuo"
 5
 
@@ -34,35 +38,35 @@ include "lib/icon"; cset(.) | length
 # set add/del
 #
 
-include "lib/icon"; cset(.) | del(.e)
+include "lib/sets"; cset(.) | del(.e)
 "aeiuo"
 {"a":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; cset(.) | del(.e) | .e = true
+include "lib/sets"; cset(.) | del(.e) | .e = true
 "aeiuo"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; cset(.) | (.o,.u) = true
+include "lib/sets"; cset(.) | (.o,.u) = true
 "aei"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; cset(.) | del(.e,.a,.u)
+include "lib/sets"; cset(.) | del(.e,.a,.u)
 "aeiuo"
 {"i":true,"o":true}
 
-include "lib/icon"; cset(.) | del(.e) | . += {e:true}
+include "lib/sets"; cset(.) | del(.e) | . += {e:true}
 "aeiuo"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; cset(.) | del(.e,.a,.u) | . += {u:true,a:true,e:true}
+include "lib/sets"; cset(.) | del(.e,.a,.u) | . += {u:true,a:true,e:true}
 "aeiuo"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; cset(.) | del(.e,.a,.u) | (.e,.a,.u) = true
+include "lib/sets"; cset(.) | del(.e,.a,.u) | (.e,.a,.u) = true
 "aeiuo"
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
-include "lib/icon"; cset(.) | .x = true
+include "lib/sets"; cset(.) | .x = true
 "abc"
 {"a":true,"b":true,"c":true,"x":true}
 
@@ -71,62 +75,62 @@ include "lib/icon"; cset(.) | .x = true
 #
 
 # ∋
-include "lib/icon"; set(.) | has("k")
+include "lib/sets"; set(.) | has("k")
 [3,2,1,"k"]
 true
 
 # ∋
-include "lib/icon"; set(.) | .k
+include "lib/sets"; set(.) | .k
 [3,2,1,"k"]
 true
 
 # ∋
-include "lib/icon"; set(.) | has("h")
+include "lib/sets"; set(.) | has("h")
 [3,2,1,"k"]
 false
 
 # ∋
-include "lib/icon"; set(.) | if .h then true else false end
+include "lib/sets"; set(.) | if .h then true else false end
 [3,2,1,"k"]
 false
 
 # ∋
-include "lib/icon"; set(.) | .h
+include "lib/sets"; set(.) | .h
 [3,2,1,"k"]
 null
 
 # ∌
-include "lib/icon"; set(.) | .h|not
+include "lib/sets"; set(.) | .h|not
 [3,2,1,"k"]
 true
 
 # ∌
-include "lib/icon"; set(.) | .h==null
+include "lib/sets"; set(.) | .h==null
 [3,2,1,"k"]
 true
 
 # ∈
-include "lib/icon"; set(.) as $s | "k" | in($s)
+include "lib/sets"; set(.) as $s | "k" | in($s)
 [3,2,1,"k"]
 true
 
 # ∈
-include "lib/icon"; set(.) as $s | "h" | in($s)
+include "lib/sets"; set(.) as $s | "h" | in($s)
 [3,2,1,"k"]
 false
 
 # ∈
-include "lib/icon"; set(.) as $s | "h" | in($s)
+include "lib/sets"; set(.) as $s | "h" | in($s)
 [3,2,1,"k"]
 false
 
 # ∉
-include "lib/icon"; set(.) as $s | "h" | in($s)|not
+include "lib/sets"; set(.) as $s | "h" | in($s)|not
 [3,2,1,"k"]
 true
 
 # null => false
-include "lib/icon"; set(.) | .h//false
+include "lib/sets"; set(.) | .h//false
 [3,2,1,"k"]
 false
 
@@ -135,36 +139,36 @@ false
 #
 
 # ∪
-include "lib/icon"; cset("aiu") + cset("eo")
+include "lib/sets"; cset("aiu") + cset("eo")
 null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
 # ∪
-include "lib/icon"; cset("aiu") * cset("eo")
+include "lib/sets"; cset("aiu") * cset("eo")
 null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
 # ∩
-include "lib/icon"; cset("aeiouxyz") | intersection(cset("xyz12345"))
+include "lib/sets"; cset("aeiouxyz") | intersection(cset("xyz12345"))
 null
 {"x":true,"y":true,"z":true}
 
 # ∩ ∅
-include "lib/icon"; (cset("xyz") | intersection(cset("abc"))) == {}
+include "lib/sets"; (cset("xyz") | intersection(cset("abc"))) == {}
 null
 true
 
 # ∩ ∪
-include "lib/icon"; cset("aiu") + cset("eo") | intersection(cset("eo"))
+include "lib/sets"; cset("aiu") + cset("eo") | intersection(cset("eo"))
 null
 {"o":true,"e":true}
 
-include "lib/icon"; cset("aeiou") | intersection(cset("eo")) + cset("aiu")
+include "lib/sets"; cset("aeiou") | intersection(cset("eo")) + cset("aiu")
 null
 {"a":true,"e":true,"i":true,"o":true,"u":true}
 
 # –
-include "lib/icon"; cset("aeiou") | difference(cset("abc"))
+include "lib/sets"; cset("aeiou") | difference(cset("abc"))
 null
 {"e":true,"i":true,"o":true,"u":true}
 
@@ -173,17 +177,17 @@ null
 #
 
 # ⊂
-include "lib/icon"; cset("xyz") as $a | cset("xyz12345") as $b | $a != $b and ($a | intersection($b)) == $a
+include "lib/sets"; cset("xyz") as $a | cset("xyz12345") as $b | $a != $b and ($a | intersection($b)) == $a
 null
 true
 
 # ⊂
-include "lib/icon"; cset("xyz") | subset(cset("xyz12345"))
+include "lib/sets"; cset("xyz") | subset(cset("xyz12345"))
 null
 true
 
 # ⊃ 
-include "lib/icon"; cset("xyz123") as $a | cset("xyz") as $b | $a != $b and ($a | intersection($b)) == $b
+include "lib/sets"; cset("xyz123") as $a | cset("xyz") as $b | $a != $b and ($a | intersection($b)) == $b
 null
 true
 
@@ -193,12 +197,12 @@ true
 true
 
 # ≡
-include "lib/icon"; cset("xyz") == {"y":true,"x":true,"z":true}
+include "lib/sets"; cset("xyz") == {"y":true,"x":true,"z":true}
 null
 true
 
 # ≢
-include "lib/icon"; cset("xyz") != { }
+include "lib/sets"; cset("xyz") != { }
 null
 true
 
