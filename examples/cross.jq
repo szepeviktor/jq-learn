@@ -1,8 +1,8 @@
 #!/usr/bin/jq -nRrf
 
 # Usage:
-#   ./cross.jq -L lib --arg word1 'lottery' --arg word2 'boat'
-#   ./cross.jq -L lib --arg word1 'computer' --arg word2 'center'
+#   ./cross.jq --arg word1 'lottery' --arg word2 'boat'
+#   ./cross.jq --arg word1 'computer' --arg word2 'center'
 #
 # Output:
 #  b

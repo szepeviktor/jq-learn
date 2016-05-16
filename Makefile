@@ -3,7 +3,7 @@
 .SILENT:
 
 .PHONY: all clean build tests
-.PHONY: cross script
+.PHONY: cross script star
 
 ########################################################################
 # Macros
@@ -52,5 +52,11 @@ cross:
 
 script:
 	./examples/script.sh 'on' 'one motion is optional'
+
+star:
+	./examples/star.jq --arg alphabet '01' --argjson ordered true  | head -n 20 >/tmp/star1.tmp
+	./examples/star.jq --arg alphabet '01' --argjson ordered false | head -n 20 >/tmp/star2.tmp
+	echo -e 'WO\tNO'
+	paste /tmp/star[12].tmp
 
 # vim:ai:sw=4:ts=4:noet:syntax=make

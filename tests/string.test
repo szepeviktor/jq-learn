@@ -76,32 +76,4 @@ include "lib/icon"; upto("aeiou"; .)
 9
 11
 
-#
-# star
-#
-
-# not well ordered
-include "lib/icon"; limit(8; star(.))
-"01"
-""
-"0"
-"1"
-"00"
-"10"
-"01"
-"11"
-"000"
-
-# ordered
-include "lib/icon"; limit(8; star_wo(.))
-"01"
-""
-"0"
-"1"
-"00"
-"01"
-"10"
-"11"
-"000"
-
 # vim:ai:sw=2:ts=2:et:syntax=python
