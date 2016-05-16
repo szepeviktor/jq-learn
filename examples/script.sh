@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Usage: script.sh "mi" "mi mama me mima"
+# Usage: script.sh "on" "one motion is optional"
 
 STRING=${1?Expected string to find}
 TARGET=${2?Expected target string}

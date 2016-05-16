@@ -2,13 +2,16 @@
 
 .SILENT:
 
+.PHONY: all clean build tests
+.PHONY: cross script
+
 ########################################################################
 # Macros
 ########################################################################
 
 JQ := /usr/bin/jq --run-tests
 
-TESTS := $(wildcard *.test)
+TESTS := $(wildcard tests/*.test)
 
 ########################################################################
 # Patterns
@@ -26,20 +29,28 @@ TESTS := $(wildcard *.test)
 
 all: $(TESTS:.test=.log)
 
-series.log: lib/series.jq lib/stream.jq lib/control.jq
-stream.log: lib/stream.jq lib/control.jq
-string.log: lib/icon.jq
-sets.log: lib/icon.jq
+tests/series.log: lib/series.jq lib/stream.jq lib/control.jq
+tests/stream.log: lib/stream.jq lib/control.jq
+tests/string.log: lib/icon.jq
+tests/sets.log: lib/icon.jq
 
 ########################################################################
 # Utilities
 ########################################################################
 
 clean:
-	rm -f $(TESTS:.test=.log)
+	rm -f tests/*.log
 
-build: clean all
+build tests: clean all
 
-tests: build
+########################################################################
+# Examples
+########################################################################
+
+cross:
+	./examples/cross.jq --arg word1 'computer' --arg word2 'center'
+
+script:
+	./examples/script.sh 'on' 'one motion is optional'
 
 # vim:ai:sw=4:ts=4:noet:syntax=make

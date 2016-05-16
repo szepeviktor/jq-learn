@@ -1,11 +1,14 @@
 # Called from `script.sh`
 
-import "icon" as icon;
+# Produces a stream on positions of `needle` inside `haystack`
+def find(needle; haystack):
+    haystack | _strindices(needle)[]
+;
 
 # Entry point
 def main:
     "Positions of \"" + $string + "\" inside \"" + $target + "\":",
-   icon::find($string; $target)
+   find($string; $target)
 ;
 
 main
