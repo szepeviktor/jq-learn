@@ -47,15 +47,28 @@ def star_wo(s):
 ########################################################################
 
 def intersection(s):
-    to_entries
-    | map(select(.key as $k | s | has($k)))
-    | from_entries
+# 1.
+#    with_entries(select(.key as $k | s | has($k)))
+# 2.
+#    to_entries
+#    | map(select(.key as $k | s | has($k)))
+#    | from_entries
+# 3.
+    reduce (keys_unsorted[] as $k
+            | [$k, .[$k]]   # key value pair
+            | select(.[0] as $key | s | has($key))
+            | {(.[0]): .[1]}
+           ) as $x
+    ({}; . + $x)
 ;
 
 def difference(s):
-    to_entries
-    | map(select(.key as $k | s | has($k) | not))
-    | from_entries
+    reduce (keys_unsorted[] as $k
+            | [$k, .[$k]]   # key value pair
+            | select(.[0] as $key | s | has($key) | not)
+            | {(.[0]): .[1]}
+           ) as $x
+    ({}; . + $x)
 ;
 
 def subset(s):
