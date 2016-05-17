@@ -1,60 +1,68 @@
 # Easy management of tests
 
+########################################################################
+# Configuration
+########################################################################
+
+.SUFFIXES:
+
 .SILENT:
+
 .ONESHELL:
 
-.PHONY: all clean clobber build tests
+SHELL := /bin/bash
+
+.PHONY: all clean clobber check
 
 ########################################################################
-# Macros
+# Variables
 ########################################################################
 
 # Run tests
-RUN := /usr/bin/jq --run-tests
+Run := /usr/bin/jq --run-tests
 
 # Tests to check
-TESTS := $(wildcard tests/*.test)
+Tests := $(wildcard tests/*.test)
 
 # Targets simulating the tests are done
-LOGDIR := .logs
-TARGETS := $(subst tests/,$(LOGDIR)/,$(TESTS:.test=.log))
-
-########################################################################
-# Patterns
-########################################################################
-
-# Tests' output is saved in a log file
-$(LOGDIR)/%.log: tests/%.test
-	@echo '>>>' $< '<<<' | tee $@
-	$(RUN) $< | tee --append $@ | grep -v '^Testing'
-	grep -q '^\*\*\*' $@ && touch $< || true
-	@echo
+LogDir := .logs
+Targets := $(subst tests/,$(LogDir)/,$(Tests:.test=.log))
 
 ########################################################################
 # Rules
 ########################################################################
 
-all: $(TARGETS)
+# Tests' output is saved in a log file
+$(LogDir)/%.log: tests/%.test
+	@echo '>>>' $< '<<<' | tee $@
+	$(Run) $< | tee --append $@ | grep -v '^Testing'
+	grep -q '^\*\*\*' $@ && touch $< || true
+	@echo
 
-$(TARGETS): | $(LOGDIR)
-$(LOGDIR): ; mkdir -p $@
+# Default target
+all: $(Targets)
 
-$(LOGDIR)/series.log: lib/series.jq lib/stream.jq lib/control.jq
-$(LOGDIR)/sets.log:   lib/sets.jq
-$(LOGDIR)/stream.log: lib/stream.jq lib/control.jq
-$(LOGDIR)/string.log: lib/string.jq
+# Hidden directory for logs
+$(Targets): | $(LogDir)
+$(LogDir): ; mkdir -p $@
+
+# Other dependencies
+$(LogDir)/series.log: lib/series.jq lib/stream.jq lib/control.jq
+$(LogDir)/sets.log:   lib/sets.jq
+$(LogDir)/stream.log: lib/stream.jq lib/control.jq
+$(LogDir)/string.log: lib/string.jq
 
 ########################################################################
 # Utilities
 ########################################################################
 
 clean:
-	rm -f $(TARGETS)
+	rm -f $(Targets)
 
 clobber: clean
-	rm -rf $(LOGDIR)
+	rm -rf $(LogDir)
 
-build tests: clean all
+check: clean all
 
 ########################################################################
 # Examples
@@ -71,7 +79,7 @@ script:
 star:
 	./examples/star.jq --arg alphabet '01' --argjson ordered true  | head -n 20 >/tmp/star1.tmp
 	./examples/star.jq --arg alphabet '01' --argjson ordered false | head -n 20 >/tmp/star2.tmp
-	echo -e 'ORDERED\tNOT ORDERED\n==================='
+	echo -e '=======+===========\nORDERED|NOT ORDERED\n=======+==========='
 	paste /tmp/star[12].tmp
 
 # vim:ai:sw=4:ts=4:noet:syntax=make
