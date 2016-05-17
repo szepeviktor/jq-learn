@@ -1,9 +1,9 @@
 # Easy management of tests
 
 .SILENT:
+.ONESHELL:
 
-.PHONY: all clean build tests
-.PHONY: cross script star
+.PHONY: all clean clobber build tests
 
 ########################################################################
 # Macros
@@ -15,40 +15,52 @@ RUN := /usr/bin/jq --run-tests
 # Tests to check
 TESTS := $(wildcard tests/*.test)
 
+# Targets simulating the tests are done
+LOGDIR := .logs
+TARGETS := $(subst tests/,$(LOGDIR)/,$(TESTS:.test=.log))
+
 ########################################################################
 # Patterns
 ########################################################################
 
-# Output of tests is saved in a log file
-%.log: %.test
+# Tests' output is saved in a log file
+$(LOGDIR)/%.log: tests/%.test
 	@echo '>>>' $< '<<<' | tee $@
 	$(RUN) $< | tee --append $@ | grep -v '^Testing'
-	-grep -q '^\*\*\*' $@ && touch $<
+	grep -q '^\*\*\*' $@ && touch $< || true
 	@echo
 
 ########################################################################
 # Rules
 ########################################################################
 
-all: $(TESTS:.test=.log)
+all: $(TARGETS)
 
-tests/series.log: lib/series.jq lib/stream.jq lib/control.jq
-tests/sets.log:   lib/sets.jq
-tests/stream.log: lib/stream.jq lib/control.jq
-tests/string.log: lib/string.jq
+$(TARGETS): | $(LOGDIR)
+$(LOGDIR): ; mkdir -p $@
+
+$(LOGDIR)/series.log: lib/series.jq lib/stream.jq lib/control.jq
+$(LOGDIR)/sets.log:   lib/sets.jq
+$(LOGDIR)/stream.log: lib/stream.jq lib/control.jq
+$(LOGDIR)/string.log: lib/string.jq
 
 ########################################################################
 # Utilities
 ########################################################################
 
 clean:
-	rm -f tests/*.log
+	rm -f $(TARGETS)
+
+clobber: clean
+	rm -rf $(LOGDIR)
 
 build tests: clean all
 
 ########################################################################
 # Examples
 ########################################################################
+
+.PHONY: cross script star
 
 cross:
 	./examples/cross.jq --arg word1 'computer' --arg word2 'center'
