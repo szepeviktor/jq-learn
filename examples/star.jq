@@ -12,12 +12,6 @@ def star(s):
     "", ((s/"")[]) + star(s)
 ;
 
-# TCO?
-#?def star(s):
-#?   def R: "", ((s/"")[]) + R;
-#?   R
-#?;
-
 # "Well" ordered
 def star_wo(s):
     "",
