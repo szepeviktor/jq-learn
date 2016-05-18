@@ -1,4 +1,4 @@
-# Easy management of tests
+# Easy management of tests and examples
 
 ########################################################################
 # Configuration
@@ -6,7 +6,7 @@
 
 version_test := $(filter 4.0,$(firstword $(sort $(MAKE_VERSION) 4.0)))
 ifndef version_test
-$(error Using GNU Make version $(MAKE_VERSION); version 4.0 is needed)
+$(error Using GNU Make version $(MAKE_VERSION); version >= 4.0 is needed)
 endif
 
 SHELL := /bin/bash
@@ -47,7 +47,7 @@ $(LogDir)/%.log: tests/%.test
 	echo
 
 # Hidden directory for logs
-$(Targets): | $(LogDir)
+$(firstword $(Targets)): | $(LogDir)
 $(LogDir): ; mkdir --parents $@
 
 # Other dependencies
