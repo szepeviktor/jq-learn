@@ -4,13 +4,20 @@
 # Configuration
 ########################################################################
 
+version_test := $(filter 4.0,$(firstword $(sort $(MAKE_VERSION) 4.0)))
+ifndef version_test
+$(error Using GNU Make version $(MAKE_VERSION); version 4.0 is needed)
+endif
+
+SHELL := /bin/bash
+
+.DEFAULT_GOAL := all
+
 .SUFFIXES:
 
 .SILENT:
 
 .ONESHELL:
-
-SHELL := /bin/bash
 
 .PHONY: all clean clobber check
 
@@ -34,23 +41,23 @@ Targets := $(subst tests/,$(LogDir)/,$(Tests:.test=.log))
 
 # Tests' output is saved in a log file
 $(LogDir)/%.log: tests/%.test
-	@echo '>>>' $< '<<<' | tee $@
+	echo '>>>' $< '<<<' | tee $@
 	$(Run) $< | tee --append $@ | grep -v '^Testing'
 	grep -q '^\*\*\*' $@ && touch $< || true
-	@echo
-
-# Default target
-all: $(Targets)
+	echo
 
 # Hidden directory for logs
 $(Targets): | $(LogDir)
-$(LogDir): ; mkdir -p $@
+$(LogDir): ; mkdir --parents $@
 
 # Other dependencies
 $(LogDir)/series.log: lib/series.jq lib/stream.jq lib/control.jq
 $(LogDir)/sets.log:   lib/sets.jq
 $(LogDir)/stream.log: lib/stream.jq lib/control.jq
 $(LogDir)/string.log: lib/string.jq
+
+# Default target
+all: $(Targets)
 
 ########################################################################
 # Utilities
