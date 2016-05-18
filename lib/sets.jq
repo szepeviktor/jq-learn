@@ -2,12 +2,11 @@
 #  Objects as sets
 ########################################################################
 
-# Build a character set
+# Set construction from strings and arrays
 def cset(s):
     reduce (s/"")[] as $c ({}; . += {($c): true})
 ;
 
-# Build a set from an array
 def set(a):
     reduce a[] as $x ({}; . += {($x|tostring): true})
 ;
@@ -22,21 +21,8 @@ def mapobj(f):
     ({}; . + $x)
 ;
 
+# Common sets operations
 def intersection(s):
-# 1.
-#    with_entries(select(.key as $k | s | has($k)))
-# 2.
-#    to_entries
-#    | map(select(.key as $k | s | has($k)))
-#    | from_entries
-# 3.
-#   reduce (keys_unsorted[] as $k
-#           | [$k, .[$k]]   # key value pair
-#           | select(.[0] as $key | s | has($key))
-#           | {(.[0]): .[1]}
-#          ) as $x
-#   ({}; . + $x)
-# 4.
     mapobj(select(.key as $key | s | has($key)))
 ;
 
