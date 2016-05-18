@@ -4,28 +4,41 @@
 # Configuration
 ########################################################################
 
+# Why are using some of the newest GNU Make features.
 version_test := $(filter 4.0,$(firstword $(sort $(MAKE_VERSION) 4.0)))
 ifndef version_test
 $(error Using GNU Make version $(MAKE_VERSION); version >= 4.0 is needed)
 endif
 
-SHELL := /bin/bash
-
-.DEFAULT_GOAL := all
-
-.SUFFIXES:
-
+# Make will not print the recipe used to remake those particular files before
+# executing them.
 .SILENT:
 
+# Eliminate use of the built-in implicit rules. Also clear out the default list
+# of suffixes for suffix rules.
+.SUFFIXES:
+
+# Sets the default goal to be used if no targets were specified on the command
+# line.
+.DEFAULT_GOAL := all
+
+# When a target is built all lines of the recipe will be given to a single
+# invocation of the shell.
 .ONESHELL:
 
-.PHONY: all clean clobber check
+# Default shell: if we require GNU Make, why not Bash?
+SHELL := /bin/bash
+
+# When it is time to consider phony targets, make will run its recipe
+# unconditionally, regardless of whether a file with that name exists or what
+# its last-modification time is.
+.PHONY: all build clean clobber check
 
 ########################################################################
 # Variables
 ########################################################################
 
-# Run tests
+# Call `jq` to run tests
 Run := /usr/bin/jq --run-tests
 
 # Tests to check
@@ -39,7 +52,7 @@ Targets := $(subst tests/,$(LogDir)/,$(Tests:.test=.log))
 # Rules
 ########################################################################
 
-# Tests' output is saved in a log file
+# Tests output is saved in a log file
 $(LogDir)/%.log: tests/%.test
 	echo '>>>' $< '<<<' | tee $@
 	$(Run) $< | tee --append $@ | grep -v '^Testing'
@@ -69,7 +82,7 @@ clean:
 clobber: clean
 	rm -rf $(LogDir)
 
-check: clean all
+build check: clean all
 
 ########################################################################
 # Examples
