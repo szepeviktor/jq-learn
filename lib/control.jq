@@ -2,7 +2,8 @@
 # Control functions
 ########################################################################
 
-# 
+# `iterate` returns an infinite stream of repeated applications of `f` to `.`:
+#       x | iterate(f) = x, x|f, x|f|f...
 def iterate(f):
     def R: ., (f | R);
     . | R

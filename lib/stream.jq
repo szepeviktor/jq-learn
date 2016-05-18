@@ -4,18 +4,21 @@
 
 include "lib/control";
 
-# Reimplementation of `first`
+# Extract the first element of a stream
 def cut(g):
     label $pipe | g | ., break $pipe
 ;
 
-# Infinite regeneration of generator
+# `cycle` ties a finite stream into a circular one, or equivalently, the
+# infinite repetition of the original stream.  It is the identity on infinite
+# streams
 def cycle(g):
     def R: g, R;
     R
 ;
 
-# Missing builtin opposite of `limit`
+# `drop` returns the suffix of stream `g` after the first `n` elements, or
+# `empty` after all elements are dropped
 def drop($n; g):
     if $n < 0 then g
     else foreach g as $item
@@ -31,15 +34,17 @@ def enum(g):
        (-1; .+1; [., $item])
 ;
 
-#
+# `replicate(n; x)` is a list of length `n` with `x` the value of every element
 def replicate($n; $x):
 #   [limit($n; repeat(x))]
     [range($n) | $x]
 ;
 
-def replicate($n): replicate($n; .);
+def replicate($n):
+    . as $x |
+    replicate($n; $x);
 
-# Reimplementation of `limit`
+# `take(n; g)` returns the prefix of `g` of length `n`
 def take($n; g):
     if $n < 0
     then g
@@ -57,7 +62,9 @@ def take($n; g):
 #?    [[g], [h]] | transpose[]
 #?;
 
-# Optimized for two generators
+# `zip` takes two streams and returns a stream of corresponding pairs.
+# If one input list is short, excess elements of the shorter stream are
+# replaced with `null`.
 def zip(g; h):
     [[g], [h]] as $pair |
     ($pair | map(length) | max) as $longest |
@@ -65,7 +72,7 @@ def zip(g; h):
         (null; null; [$pair[0][$j], $pair[1][$j]])
 ;
 
-# Zip two or more generators
+# Generalized `zip` for 2 or more generators
 def zipN:
     . as $in |
     (map(length) | max) as $longest |
