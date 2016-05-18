@@ -9,17 +9,22 @@
 # chr, ord
 #
 
-def ord(s): s|explode[0]; ord("A")
+include "lib/string"; ord("A")
 null
 65
 
-def chr(n): [n]|implode; chr(65) == "A"
+include "lib/string"; chr(65) == "A"
 null
 true
 
-def ord(s): s|explode[0]; def chr(n): [n]|implode; ord(chr(65)) == 65 and chr(ord("A")) == "A"
+include "lib/string"; ord(chr(65)) == 65 and chr(ord("A")) == "A"
 null
 true
+
+include "lib/string"; ord("€"), chr(8364)
+null
+8364
+"€"
 
 #
 # find

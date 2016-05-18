@@ -1,5 +1,5 @@
 ########################################################################
-# Icon style functions
+# String functions
 ########################################################################
 
 # Generates the stream of integer positions in `haystack` at which `needle`
@@ -16,6 +16,18 @@ def upto(cset; string):
     | [_strindices((cset/"")[])]
     | flatten
     | unique[]
+;
+
+# Produces an integer (ordinal) that is the internal representation of the
+# first character in `s`
+def ord(s):
+    s | explode[0]
+;
+
+# Produces a string of length 1 consisting of the character whose internal
+# representation is `n`
+def chr(n):
+    [n] | implode
 ;
 
 # vim:ai:sw=4:ts=4:et:syntax=python
