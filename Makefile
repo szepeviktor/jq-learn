@@ -4,14 +4,14 @@
 # Configuration
 ########################################################################
 
-# Why are using some of the newest GNU Make features.
+# We are using some of the newest GNU Make features... so require GNU Make
+# version >= 4.0
 version_test := $(filter 4.0,$(firstword $(sort $(MAKE_VERSION) 4.0)))
 ifndef version_test
 $(error Using GNU Make version $(MAKE_VERSION); version >= 4.0 is needed)
 endif
 
-# Make will not print the recipe used to remake those particular files before
-# executing them.
+# Make will not print the recipe used to remake files.
 .SILENT:
 
 # Eliminate use of the built-in implicit rules. Also clear out the default list
@@ -26,7 +26,7 @@ endif
 # invocation of the shell.
 .ONESHELL:
 
-# Default shell: if we require GNU Make, why not Bash?
+# Default shell: if we require GNU Make, why not require Bash?
 SHELL := /bin/bash
 
 # When it is time to consider phony targets, make will run its recipe
