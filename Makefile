@@ -1,6 +1,12 @@
 # Easy management of tests and examples
 
 ########################################################################
+# Parameters (redefine as you like)
+########################################################################
+
+InstallPrefix := /usr/local
+
+########################################################################
 # Configuration
 ########################################################################
 
@@ -32,18 +38,21 @@ SHELL := /bin/bash
 # When it is time to consider phony targets, make will run its recipe
 # unconditionally, regardless of whether a file with that name exists or what
 # its last-modification time is.
-.PHONY: all build clean clobber check
+.PHONY: all build clean clobber check install uninstall
 
 ########################################################################
 # Variables
 ########################################################################
 
 # Call `jq` to run tests
-Run := /usr/bin/jq --run-tests
+Run := jq --run-tests
 
 # Conversions
 Y2J := bin/y2j
 J2Y := bin/j2y
+
+# Copy scripts
+Install := install --verbose --compare --mode 555
 
 # Tests to check
 Tests := $(wildcard tests/*.test)
@@ -51,6 +60,9 @@ Tests := $(wildcard tests/*.test)
 # Targets simulating the tests are done
 LogDir := .logs
 Targets := $(subst tests/,$(LogDir)/,$(Tests:.test=.log))
+
+# Scripts
+Tools := j2y y2j yq
 
 ########################################################################
 # Rules
@@ -87,6 +99,12 @@ clobber: clean
 	rm --recursive --force $(LogDir)
 
 build check: clean all
+
+install:
+	sudo $(Install) $(addprefix bin/,$(Tools)) $(InstallPrefix)/bin
+
+uninstall:
+	sudo rm --force --verbose $(addprefix $(InstallPrefix)/bin/,$(Tools))
 
 ########################################################################
 # Examples
