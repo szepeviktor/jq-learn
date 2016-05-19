@@ -41,6 +41,10 @@ SHELL := /bin/bash
 # Call `jq` to run tests
 Run := /usr/bin/jq --run-tests
 
+# Conversions
+Y2J := bin/y2j
+J2Y := bin/j2y
+
 # Tests to check
 Tests := $(wildcard tests/*.test)
 
@@ -55,8 +59,8 @@ Targets := $(subst tests/,$(LogDir)/,$(Tests:.test=.log))
 # Tests output is saved in a log file
 $(LogDir)/%.log: tests/%.test
 	echo '>>>' $< '<<<' | tee $@
-	$(Run) $< | tee --append $@ | grep -v '^Testing'
-	grep -q '^\*\*\*' $@ && touch $< || true
+	$(Run) $< | tee --append $@ | grep --inverted-match '^Testing'
+	grep --quiet '^\*\*\*' $@ && touch $< || true
 	echo
 
 # Hidden directory for logs
@@ -77,10 +81,10 @@ all: $(Targets)
 ########################################################################
 
 clean:
-	rm -f $(LogDir)/*.log
+	rm --force $(LogDir)/*.log
 
 clobber: clean
-	rm -rf $(LogDir)
+	rm --recursive --force $(LogDir)
 
 build check: clean all
 
@@ -88,7 +92,7 @@ build check: clean all
 # Examples
 ########################################################################
 
-.PHONY: cross script star
+.PHONY: cross script star yaml
 
 cross:
 	./examples/cross.jq --arg word1 'computer' --arg word2 'center'
@@ -97,9 +101,20 @@ script:
 	./examples/script.sh 'on' 'one motion is optional'
 
 star:
-	./examples/star.jq --arg alphabet '01' --argjson ordered true  | head -n 20 >/tmp/star1.tmp
-	./examples/star.jq --arg alphabet '01' --argjson ordered false | head -n 20 >/tmp/star2.tmp
-	echo -e '=======+===========\nORDERED|NOT ORDERED\n=======+==========='
+	./examples/star.jq --arg alphabet '01' --argjson ordered true  | head --lines 20 >/tmp/star1.tmp
+	./examples/star.jq --arg alphabet '01' --argjson ordered false | head --lines 20 >/tmp/star2.tmp
+	echo '=======+==========='
+	echo 'ORDERED|NOT ORDERED'
+	echo '=======+==========='
 	paste /tmp/star[12].tmp
+
+yaml:
+	echo 'No news is good news...'
+	jq --null-input --raw-output \
+		--slurpfile j1 data/hardware.json \
+		--slurpfile j2 <($(J2Y) data/hardware.json | $(Y2J)) \
+		'if $$j1 == $$j2 then empty else "Failed conversion JSON <==> YAML" end'
+	diff <(< data/store.json jq --sort-keys '.store.book[1]' | bin/j2y) \
+		 <(< data/store.yaml bin/yq --sort-keys '.store.book[1]')
 
 # vim:ai:sw=4:ts=4:noet:syntax=make
