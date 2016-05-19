@@ -1,11 +1,11 @@
 #!/bin/bash
 
+#
 # Wraps jq to be able to process YAML
+#
 
-declare -r Y2J=$(dirname $0)/y2j
-declare -r J2Y=$(dirname $0)/j2y
-
-if [[ $# -eq 0 || $1 == '-h' ]]; then
+# Show help?
+if [[ $# -eq 0 || $1 == '-h' || $1 == '--help' ]]; then
     cat <<\EOF
 yq - commandline YAML processor
 Usage: yq [options] <jq filter>
@@ -33,11 +33,10 @@ Usage: yq [options] <jq filter>
     For more advanced filters see the jq(1) manpage and
     https://stedolan.github.io/jq
 EOF
-    exit 0
+    exit $(( $# == 0 ))
 fi
 
-set -o pipefail 
-
+# Only accept terminal input with explicit petition
 if [[ -t 0 ]]; then
     if [[ $1 == '-K' ]]; then
         shift
@@ -47,8 +46,16 @@ if [[ -t 0 ]]; then
     fi
 fi
 
+# Format conversors
+declare -r Y2J=$(dirname $0)/y2j
+declare -r J2Y=$(dirname $0)/j2y
+
+# Wrap jq
+set -o pipefail
+
 if [[ $1 == '-J' || $1 == '--JSON' ]]; then
     shift
+    # Preserve JSON output
     ${Y2J} | jq "$@"
 else
     ${Y2J} | jq "$@" | ${J2Y}
