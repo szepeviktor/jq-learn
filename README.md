@@ -1,6 +1,7 @@
-# JQ tests
+# JQ learn
 
-Tests intended to help the study of _JQ_, the language for _JSON_ processing.
+In my effort to learn JQ I developed a serie of tests, examples, tools&hellip;
+I hope this material will be useful for you.
 
 To run all tests execute:
 
