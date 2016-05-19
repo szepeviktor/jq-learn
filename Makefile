@@ -59,7 +59,7 @@ Targets := $(subst tests/,$(LogDir)/,$(Tests:.test=.log))
 # Tests output is saved in a log file
 $(LogDir)/%.log: tests/%.test
 	echo '>>>' $< '<<<' | tee $@
-	$(Run) $< | tee --append $@ | grep --inverted-match '^Testing'
+	$(Run) $< | tee --append $@ | grep --invert-match '^Testing'
 	grep --quiet '^\*\*\*' $@ && touch $< || true
 	echo
 
