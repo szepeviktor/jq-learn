@@ -2,9 +2,80 @@
 # Blank lines and lines starting with # are ignored.
 
 #########################################################################
-# Generic goal-directed programming
+# Goal-directed programming
+#
+# JQ has a strong influence of Icon. Backtracking, "empty" as a no-value,
+# generators, etc. Programming in this style is a new paradigm that requires
+# practice.
 #########################################################################
 
+#
+# Uses of empty
+#
+
+empty | 2
+null
+# empty
+
+2 | empty
+null
+# empty
+
+empty + 2
+null
+# empty
+
+2 + empty
+null
+# empty
+
+empty , 2
+null
+2
+
+2 , empty
+null
+2
+
+empty or true
+null
+# empty
+
+true or empty
+null
+true
+
+true and empty
+null
+# empty
+
+try empty catch 0
+null
+# empty
+
+empty // 0
+null
+0
+
+try empty catch error("Die")
+null
+# empty
+
+empty|not
+null
+# empty
+
+try error("Die") catch empty
+null
+# empty
+
+error("Die")?
+null
+# empty
+
+#
+# Multiple values
+#
 
 ("0","1") + ("0","1")
 null

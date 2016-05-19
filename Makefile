@@ -5,10 +5,10 @@
 ########################################################################
 
 # We are using some of the newest GNU Make features... so require GNU Make
-# version >= 4.0
-version_test := $(filter 4.0,$(firstword $(sort $(MAKE_VERSION) 4.0)))
+# version >= 3.82
+version_test := $(filter 3.82,$(firstword $(sort $(MAKE_VERSION) 3.82)))
 ifndef version_test
-$(error Using GNU Make version $(MAKE_VERSION); version >= 4.0 is needed)
+$(error Using GNU Make version $(MAKE_VERSION); version >= 3.82 is needed)
 endif
 
 # Make will not print the recipe used to remake files.
@@ -77,7 +77,7 @@ all: $(Targets)
 ########################################################################
 
 clean:
-	rm -f $(Targets)
+	rm -f $(LogDir)/*.log
 
 clobber: clean
 	rm -rf $(LogDir)
