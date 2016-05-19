@@ -32,6 +32,8 @@ EOF
     exit 0
 fi
 
+set -o pipefail 
+
 ${Y2J} | jq "$@" | ${J2Y}
 
 exit $?
