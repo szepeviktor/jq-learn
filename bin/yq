@@ -12,11 +12,15 @@ Usage: yq [options] <jq filter>
 
     yq is a wrapper to jq for processing YAML input, applying the given
     filter to YAML text read from the standard input and producing the
-    filter's results as YAML on standard output.  The simplest filter is
-    ., which is the identity filter, copying yq's input to its output
-    unmodified (except for formatting and keys order).
+    filter's results as YAML on standard output.
+
+    The options available are yq specific and also from jq. The yq
+    options are:
+     -h     Show this help
+     -J     Preserve JSON output format
+     -K     Accept input from terminal
     
-    Some of the options include:
+    Some of the jq options include:
      -e     set the exit status code based on the output
      -f     Read filter from the file f
      -s     read (slurp) all inputs into an array; apply filter to it
@@ -34,7 +38,21 @@ fi
 
 set -o pipefail 
 
-${Y2J} | jq "$@" | ${J2Y}
+if [[ -t 0 ]]; then
+    if [[ $1 == '-K' ]]; then
+        shift
+    else
+        echo 1>&2 'Error: reading from terminal; yq must have stdin redirected'
+        exit 1
+    fi
+fi
+
+if [[ $1 == '-J' || $1 == '--JSON' ]]; then
+    shift
+    ${Y2J} | jq "$@"
+else
+    ${Y2J} | jq "$@" | ${J2Y}
+fi
 
 exit $?
 
