@@ -2,9 +2,39 @@
 
 # Wraps jq to be able to process YAML
 
-Y2J=${0%yq}/y2j
-J2Y=${0%yq}/j2y
+declare -r Y2J=${0%yq}/y2j
+declare -r J2Y=${0%yq}/j2y
+
+if [[ $1 == '-h' ]]; then
+    shift
+    cat <<'EOF'
+yq - commandline YAML processor
+Usage: yq [options] <jq filter>
+
+    yq is a tool for processing YAML input, applying the
+    given filter to its YAML text input and producing the
+    filter's results as YAML on standard output.
+    The simplest filter is ., which is the identity filter,
+    copying yq's input to its output unmodified (except for
+    formatting).
+    For more advanced filters see the jq(1) manpage ("man jq")
+    and/or https://stedolan.github.io/jq
+
+    Some of the options include:
+     -e     set the exit status code based on the output;
+     -s     read (slurp) all inputs into an array; apply filter to it;
+     -S     sort keys of objects on output;
+     --arg a v          set variable  $a to value <v>;
+     --argjson a v      set variable  $a to JSON value <v>;
+     --slurpfile a f    set variable  $a to an array of JSON texts read from <f>;
+    See the manpage for more options.
+EOF
+    exit 0
+fi
 
 ${Y2J} | jq "$@" | ${J2Y}
+
+exit $?
+
 
 # vim:ai:sw=4:ts=4:et:syntax=sh
