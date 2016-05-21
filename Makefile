@@ -9,21 +9,7 @@ include make.d/config.make
 InstallPrefix := /usr/local
 
 ########################################################################
-# Tools
-########################################################################
-
-# Call `jq` to run tests
-RUN := jq --run-tests
-
-# Conversions
-Y2J := bin/y2j
-J2Y := bin/j2y
-
-# Install scripts 
-INSTALL := install --verbose --compare --mode 555
-
-########################################################################
-# Files
+# Targets and files
 ########################################################################
 
 # Tests to check
@@ -46,7 +32,7 @@ include make.d/hidden.make
 # Tests output is saved in a log file
 $(LogDir)/%.log: tests/%.test
 	echo '>>>' $< '<<<' | tee $@
-	$(RUN) $< | tee --append $@ | grep --invert-match '^Testing'
+	jq --run-tests $< | tee --append $@ | grep --invert-match '^Testing'
 	grep --quiet '^\*\*\*' $@ && touch $< || true
 	echo
 
@@ -74,7 +60,8 @@ clobber: clean
 build check: clean all
 
 install:
-	sudo $(INSTALL) $(addprefix bin/,$(Scripts)) $(InstallPrefix)/bin
+	sudo install --verbose --compare --mode 555 \
+		$(addprefix bin/,$(Scripts)) $(InstallPrefix)/bin
 
 uninstall:
 	sudo rm --force --verbose $(addprefix $(InstallPrefix)/bin/,$(Scripts))
@@ -82,6 +69,11 @@ uninstall:
 ########################################################################
 # Examples
 ########################################################################
+
+# Conversions
+Y2J := bin/y2j
+J2Y := bin/j2y
+YQ  := bin/yq
 
 .PHONY: cross script star yaml
 
@@ -106,6 +98,7 @@ yaml:
 		--slurpfile j2 <($(J2Y) data/hardware.json | $(Y2J)) \
 		'if $$j1 == $$j2 then empty else "Failed conversion JSON <==> YAML" end'
 	diff <(< data/store.json jq --sort-keys '.store.book[1]' | bin/j2y) \
-		 <(< data/store.yaml bin/yq --sort-keys '.store.book[1]')
+		 <(< data/store.yaml $(YQ) --sort-keys '.store.book[1]')
+	[[ $$($(YQ) -J -r .store.bicycle.color < data/store.yaml) == red ]] || echo 1>&2 Error using yq
 
 # vim:ai:sw=4:ts=4:noet:syntax=make
