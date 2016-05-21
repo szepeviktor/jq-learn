@@ -4,8 +4,17 @@
 # Wraps jq to be able to process YAML
 #
 
-# Show help?
-if [[ $# -eq 0 || $1 == '-h' || $1 == '--help' ]]; then
+# Options
+set -o pipefail
+set -o errexit
+set -o noglob
+shopt -s expand_aliases
+
+# Format conversors
+alias y2j=$(dirname $0)/y2j
+alias j2y=$(dirname $0)/j2y
+
+function help {
     cat <<\EOF
 yq - commandline YAML processor
 Usage: yq [options] <jq filter>
@@ -34,32 +43,55 @@ Usage: yq [options] <jq filter>
     https://stedolan.github.io/jq
 EOF
     exit $(( $# == 0 ))
-fi
+}
 
-# Only accept terminal input with explicit petition
-if [[ -t 0 ]]; then
-    if [[ $1 == '-K' ]]; then
-        shift
-    else
-        echo 1>&2 'Error: reading from terminal; yq must have stdin redirected'
-        exit 1
+function main {
+    (( $# > 0 )) || help
+
+    local -i json=0 keyboard=0
+
+    local opt
+    while getopts :hJK-: opt; do
+        case $opt in
+            h) help ;; 
+            J) json=1 ;; 
+            K) keyboard=1 ;; 
+            -) case $OPTARG in
+                   help) help ;;
+                   JSON|json) json=1 ;;
+                   *) OPTIND=$((OPTIND-1)) 
+                      break ;; # assume jq option
+               esac
+               ;;
+            ?) OPTIND=$((OPTIND-1)) 
+               break ;; # assume jq option
+        esac
+    done
+
+    shift $((OPTIND-1))
+
+    # Only accept terminal input with explicit petition
+    if [[ -t 0 ]]; then
+        if (( ! keyboard )); then
+            echo 1>&2 'Error reading from terminal; yq must have stdin redirected'
+            exit 1
+        fi
     fi
-fi
 
-# Format conversors
-declare -r Y2J=$(dirname $0)/y2j
-declare -r J2Y=$(dirname $0)/j2y
+    # Wrap jq
+    if (( json )); then
+        # Preserve JSON output
+        y2j | jq "$@"
+    else
+        y2j | jq "$@" | j2y
+    fi
+}
 
-# Wrap jq
-set -o pipefail
+#
+# Call main
+#
 
-if [[ $1 == '-J' || $1 == '--JSON' ]]; then
-    shift
-    # Preserve JSON output
-    ${Y2J} | jq "$@"
-else
-    ${Y2J} | jq "$@" | ${J2Y}
-fi
+main "$@"
 
 exit $?
 

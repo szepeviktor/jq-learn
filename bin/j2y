@@ -19,7 +19,13 @@ def load_json():
     return data
 
 def dump_yaml(data):
-    yaml.safe_dump(data, sys.stdout, default_flow_style=False)
+    yaml.safe_dump(data, sys.stdout,
+            default_flow_style=False,
+            default_style=None,
+            encoding='utf-8',
+            explicit_end=False,
+            indent=2,
+    )
 
 #
 # Main
